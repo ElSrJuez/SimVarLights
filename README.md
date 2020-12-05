@@ -1,2 +1,2 @@
 # SimVarLights
-Synchrozine Simming Variables with Addressable Device Lighting
+Have your Simulator State Machine to your Lighted Devices
