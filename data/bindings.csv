@@ -1,5 +1,11 @@
 Title,SimVar,SimVarValueToMatch,KeyName,RGBDeviceNumber,RGBZoneNumber,RGBLEDNumber,RGBColorIf,RGBColorElse
-BACKGROUND,,,,,,,,#000080
+SimVarLightsConfig,BACKGROUND,,,,,,,#000080
 Parking brake on,BRAKE_PARKING_POSITION,1,.,,,,#0000ff,#00ff00
-,,,,,,,,
-, ,,,,,,,
+Position of landing gear,GEAR_POSITION,2,,,,,#0000ff,#00ff00
+On/off flag,AUTOPILOT_MASTER,,,,,,#0000ff,#00ff00
+Autothrottle armed,AUTOPILOT_THROTTLE_ARM,,,,,,#0000ff,#00ff00
+Approach mode active,AUTOPILOT_APPROACH_HOLD,,,,,,#0000ff,#00ff00
+Altitude hole active,AUTOPILOT_ALTITUDE_LOCK,,,,,,#0000ff,#00ff00
+Heading mode active,AUTOPILOT_HEADING_LOCK,,,,,,#0000ff,#00ff00
+Flight director active,AUTOPILOT_FLIGHT_DIRECTOR_ACTIVE,,,,,,#0000ff,#00ff00
+GPS is driving Nav 1 indicator,GPS DRIVES NAV1,,,,,,#0000ff,#00ff00

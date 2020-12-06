@@ -1,14 +1,18 @@
 import sys
-import json
+import csv
+import types
+import time
 from SimConnect import *
 
 sm = None
-myVars = []
+myBindings = []
 aq = None
 ae = None
-filename 
+RGBDefaultBackground = None
 
-def initAll(defaultRefreshTime: int):
+filename = 'data/bindings.csv'
+
+def init_simconnect(defaultRefreshTime: int):
     global aq
     global sm 
     
@@ -32,26 +36,84 @@ def initAll(defaultRefreshTime: int):
     # If no data is received in 40ms the value will be set to None
     # Each request can be fine tuned by setting the time param.
 
+def read_config(csv_filename: str):
+    global RGBDefaultBackground
+    csv_rows = []
+    with open(csv_filename, mode='r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        line_count = 0        
+        for row in csv_reader:
+            print(f"Processing Row {line_count} with data ",row)
+            if line_count == 0:
+                print(f'Column names are {", ".join(row)}')
+                line_count += 1
+            # Add all Named Configuration Row processing here
+
+            if row["SimVar"] == "BACKGROUND":
+                RGBDefaultBackground = row["SimVar"]
+                print("Default Key Background Color will be ",RGBDefaultBackground)
+
+            else:                
+                #print(f'\t Title: {row["Title"]} SimVar: {row["SimVar"]} SimVarValueToMatch: {row["SimVarValueToMatch"]} RGBColorIf: {row["RGBColorIf"]} RGBColorElse: {row["RGBColorElse"]}.')           
+                csv_rows.append(row)
+                #for c in csvColumns:
+                #    myConcat = c+" "+row[c]
+                #    print(f' {", ".join(myConcat)}')
+                line_count += 1
+            
+        print(f'Processed {line_count} lines.')
+        return csv_rows
+
+def init_simvars(varList):
+    myVars=[]
+
+    for i in varList:
+        meta = None
+        #print(f'Var {i["SimVar"]}, Title {i["Title"]}, Title {i["Title"]}')
+        print(f'Getting variable details for {i["SimVar"]}...')
+        meta = aq.find(i["SimVar"])
+        #print(dir(meta))
+        #print(meta.__dict__)
+        #print(meta["__dict__"]) 
+        #if meta is not None:
+        #    for att in dir(meta):
+        #        print(f'Attribute {att} is {meta[""]}...')
+        #        print(att)
+        #        print (att, getattr(meta,att))        
+        if meta:            
+            t = i.copy()
+            t["accesible"]=True
+            myVars.append(t)
+        else:
+            print(f'Warning, could not find variable {i["SimVar"]}.')
+
+
+    return myVars
+
+# Load Configuration File
+csv_data = read_config(filename)
+#print("csv file dictionary: ",csv_data.__dict__)
+
 # Initialize SimConnect
-initAll(defaultRefreshTime = 2000)
+init_simconnect(defaultRefreshTime = 2000)
 
 if sm is not None:
-    print(sm)
-    brakevar = aq.find('BRAKE_PARKING_INDICATOR')
-    print("brake var: ",brakevar)
-    myVars.append(brakevar)    
-    altitudevar = aq.find('PLANE_ALTITUDE')
-    altitudevar.time = 200
-    print("altitude var: ",altitudevar)
-    myVars.append(altitudevar)
-    for i in myVars:
-        for att in dir(i):
-            print("Var Definition: ", i.definition)
-            print("Var Description: ", i.description)
-            print("Var Description: ", i.description)
-            print (att, getattr(i,att))
+    print("SimConnect Object: ",sm)    
+    myBindings = init_simvars(csv_data)
+    print(dir(myBindings))
 
+    while True:
+        for i in myBindings:
+            #print("getting value for ",i)
+            var_value = None
+            var_value = aq.get(i["SimVar"])
+            print(f'Var: {i["SimVar"]}, Value: {var_value}')
+        time.sleep(0.5)
     
+    
+
+
+
 
     #aq.set("PLANE_ALTITUDE", altitude)
 
