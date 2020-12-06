@@ -1,2 +1,5 @@
 Title,SimVar,SimVarValueToMatch,KeyName,RGBDeviceNumber,RGBZoneNumber,RGBLEDNumber,RGBColorIf,RGBColorElse
-Parking brake on,BRAKE PARKING POSITION,1,.,,,,#0000ff,#00ff00
+BACKGROUND,,,,,,,,#000080
+Parking brake on,BRAKE_PARKING_POSITION,1,.,,,,#0000ff,#00ff00
+,,,,,,,,
+, ,,,,,,,
