@@ -3,7 +3,9 @@ import csv
 import types
 import time
 from os import system
+from openrgb.utils import RGBColor
 from SimConnect import *
+from RGB import *
 
 sm = None
 myBindings = []
@@ -93,13 +95,31 @@ if sm is not None:
     myBindings = init_simvars(csv_data)
     print(dir(myBindings))
 
+    inopLights = []
+    for i in myBindings:
+        if i["INOP"]:
+            print(f'Marking variable {i["SimVar"]} with RGBLEDNumber {i["RGBLEDNumber"]} as INOP.')
+            inopLights.append(int(i["RGBLEDNumber"]))
+    keyboard_leds = initRGB()
+    led_count=len(keyboard_leds)
+    light_background(backColorHEX='#000020',inopColorHEX='#800000',INOP=inopLights)
+
+
     while True:
         system('cls')
         for i in myBindings:
             #print("getting value for ",i)
             var_value = None
             var_value = aq.get(i["SimVar"])
+            #RGBColorIf = RGBColor.fromHEX(i["RGBColorIf"])
+            #RGBColorElse = RGBColor.fromHEX(i["RGBColorElse"])
+            RGBColorIf=RGBColor(0,0,255)
+            RGBColorElse=RGBColor(0,32,0)
             print(f'Var: {i["SimVar"]}, Value: {var_value}')
-        time.sleep(2)
+            if int(i["SimVarValueToMatch"]) == var_value:
+                light_led(id = int(i["RGBLEDNumber"]),litColor = RGBColorIf)
+            else:
+                light_led(id = int(i["RGBLEDNumber"]),litColor = RGBColorElse)
+        time.sleep(1)
 else:
     print("SimConnect Object was not initialized.")

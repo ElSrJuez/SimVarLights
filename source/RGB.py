@@ -36,7 +36,7 @@ def light_background(backColorHEX: str, inopColorHEX: str, INOP: int):
     #inopColor = RGBColor.fromHEX(inopColorHEX)
     backColor = RGBColor(0,0,32)
     inopColor = RGBColor(127,0,0)
-    print(f'Setting global zone {keyboard_zone} background color {backColor} and INOP variables to {inopColor}.')
+    print(f'Setting global zone {keyboard_zone} background color {backColor} and INOP variables to color {inopColor}.')
     #keyboard_zone.colors = backColor
     #keyboard_zone.update()
     keyboard_zone.set_color(backColor)
