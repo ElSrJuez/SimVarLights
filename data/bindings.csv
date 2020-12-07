@@ -1,11 +1,12 @@
 Title,SimVar,SimVarValueToMatch,KeyName,RGBDeviceNumber,RGBZoneNumber,RGBLEDNumber,RGBColorIf,RGBColorElse
 SimVarLightsConfig,BACKGROUND,,,,,,,#000080
+SimVarLightsConfig,INOP,,,,,,,#800000
 Parking brake on,BRAKE_PARKING_POSITION,1,Ctrl+Num Del,,,130,#0000ff,#00ff00
 Position of landing gear,GEAR_POSITION,2,g,,,72,#0000ff,#00ff00
-On/off flag,AUTOPILOT_MASTER,,z,,,91,#0000ff,#00ff00
-Autothrottle armed,AUTOPILOT_THROTTLE_ARM,,Shit+r,,,49,#0000ff,#00ff00
-Approach mode active,AUTOPILOT_APPROACH_HOLD,,Ctrl+a,,,68,#0000ff,#00ff00
-Altitude hole active,AUTOPILOT_ALTITUDE_LOCK,,LeftShift,,,89,#0000ff,#00ff00
-Heading mode active,AUTOPILOT_HEADING_LOCK,,RightShift,,,102,#0000ff,#00ff00
-Flight director active,AUTOPILOT_FLIGHT_DIRECTOR_ACTIVE,,Ctrl+f,,,71,#0000ff,#00ff00
-GPS is driving Nav 1 indicator,GPS_DRIVES_NAV1,,Tab,,,34,#0000ff,#00ff00
+On/off flag,AUTOPILOT_MASTER,1,z,,,91,#0000ff,#00ff00
+Autothrottle armed,AUTOPILOT_THROTTLE_ARM,1,Shit+r,,,49,#0000ff,#00ff00
+Approach mode active,AUTOPILOT_APPROACH_HOLD,1,Ctrl+a,,,68,#0000ff,#00ff00
+Altitude hole active,AUTOPILOT_ALTITUDE_LOCK,1,LeftShift,,,89,#0000ff,#00ff00
+Heading mode active,AUTOPILOT_HEADING_LOCK,1,RightShift,,,102,#0000ff,#00ff00
+Flight director active,AUTOPILOT_FLIGHT_DIRECTOR_ACTIVE,1,Ctrl+f,,,71,#0000ff,#00ff00
+GPS is driving Nav 1 indicator,GPS_DRIVES_NAV1,1,Tab,,,34,#0000ff,#00ff00

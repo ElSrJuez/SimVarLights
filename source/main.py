@@ -2,6 +2,7 @@ import sys
 import csv
 import types
 import time
+from os import system
 from SimConnect import *
 
 sm = None
@@ -9,6 +10,7 @@ myBindings = []
 aq = None
 ae = None
 RGBDefaultBackground = None
+RGBINOPColor = None
 
 filename = 'data/bindings.csv'
 
@@ -27,14 +29,8 @@ def init_simconnect(defaultRefreshTime: int):
     else:
         print("Unsuccesful Simconnect call, exiting.")
         return
-    # Note the default _time is 2000 to be refreshed every 2 seconds
 
     aq = AircraftRequests(sm, _time=defaultRefreshTime)    
-    # Use _time=ms where ms is the time in milliseconds to cache the data.
-    # Setting ms to 0 will disable data caching and always pull new data from the sim.
-    # There is still a timeout of 4 tries with a 10ms delay between checks.
-    # If no data is received in 40ms the value will be set to None
-    # Each request can be fine tuned by setting the time param.
 
 def read_config(csv_filename: str):
     global RGBDefaultBackground
@@ -47,15 +43,17 @@ def read_config(csv_filename: str):
             if line_count == 0:
                 print(f'Column names are {", ".join(row)}')
                 line_count += 1
-            # Add all Named Configuration Row processing here
 
             if row["SimVar"] == "BACKGROUND":
                 RGBDefaultBackground = row["SimVar"]
                 print("Default Key Background Color will be ",RGBDefaultBackground)
-
+            elif row["SimVar"] == "INOP":
+                RGBINOPColor = row["SimVar"]
+                print("INOP SimVar Color will be ",RGBINOPColor)
             else:                
                 #print(f'\t Title: {row["Title"]} SimVar: {row["SimVar"]} SimVarValueToMatch: {row["SimVarValueToMatch"]} RGBColorIf: {row["RGBColorIf"]} RGBColorElse: {row["RGBColorElse"]}.')           
                 csv_rows.append(row)
+                print(f'Added variable from line {line_count} with name {row["SimVar"]}')
                 #for c in csvColumns:
                 #    myConcat = c+" "+row[c]
                 #    print(f' {", ".join(myConcat)}')
@@ -69,26 +67,19 @@ def init_simvars(varList):
 
     for i in varList:
         meta = None
-        #print(f'Var {i["SimVar"]}, Title {i["Title"]}, Title {i["Title"]}')
         print(f'Getting variable details for {i["SimVar"]}...')
         meta = aq.find(i["SimVar"])
-        #print(dir(meta))
-        #print(meta.__dict__)
-        #print(meta["__dict__"]) 
-        #if meta is not None:
-        #    for att in dir(meta):
-        #        print(f'Attribute {att} is {meta[""]}...')
-        #        print(att)
-        #        print (att, getattr(meta,att))        
+   
+        t = i.copy()
         if meta:            
-            t = i.copy()
-            t["accesible"]=True
-            myVars.append(t)
+            t["INOP"]=False
         else:
+            t["INOP"]=True
             print(f'Warning, could not find variable {i["SimVar"]}.')
-
-
+        myVars.append(t)
     return myVars
+
+
 
 # Load Configuration File
 csv_data = read_config(filename)
@@ -103,29 +94,12 @@ if sm is not None:
     print(dir(myBindings))
 
     while True:
+        system('cls')
         for i in myBindings:
             #print("getting value for ",i)
             var_value = None
             var_value = aq.get(i["SimVar"])
             print(f'Var: {i["SimVar"]}, Value: {var_value}')
-        time.sleep(0.5)
-    
-    
-
-
-
-
-    #aq.set("PLANE_ALTITUDE", altitude)
-
-    #ae = AircraftEvents(sm)
-    # Trigger a simple event
-    #event_to_trigger = ae.find("AP_MASTER")  # Toggles autopilot on or off
-    #event_to_trigger()
-
-    # Trigger an event while passing a variable
-    #target_altitude = 15000
-    #event_to_trigger = ae.find("AP_ALT_VAR_SET_ENGLISH")  # Sets AP autopilot hold level
-    #event_to_trigger(target_altitude)
-    #sm.quit()
+        time.sleep(2)
 else:
     print("SimConnect Object was not initialized.")
