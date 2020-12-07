@@ -1,3 +1,4 @@
+#RGB Handler Internal Module
 from openrgb import OpenRGBClient
 from openrgb.utils import DeviceType
 from openrgb.utils import RGBColor
@@ -27,6 +28,7 @@ def initRGB():
     keyboard_zone = keyb.zones[0]
     print(f'Keyboard Zone Type: {keyboard_zone.type}')
     #assert keyboard_zone.type == ZoneType.LINEAR
+    return keyboard_leds
 
 def light_background(backColorHEX: str, inopColorHEX: str, INOP: int):
     global backColor, inopColor, keyboard_zone, keyboard_leds
@@ -34,16 +36,23 @@ def light_background(backColorHEX: str, inopColorHEX: str, INOP: int):
     #inopColor = RGBColor.fromHEX(inopColorHEX)
     backColor = RGBColor(0,0,32)
     inopColor = RGBColor(127,0,0)
-    keyboard_zone
     print(f'Setting global zone {keyboard_zone} background color {backColor} and INOP variables to {inopColor}.')
-    keyboard_zone.colors = backColor
-    keyboard_zone.update()
+    #keyboard_zone.colors = backColor
+    #keyboard_zone.update()
+    keyboard_zone.set_color(backColor)
     for i in INOP:
         keyboard_leds[i].set_color(inopColor)
-    
-            
+                
 def init_lights():
     pass
 
-initRGB()
-light_background(backColorHEX='#000020',inopColorHEX='#800000',INOP=(1,2,3,4,5))
+def write_led_id(column: int, row: int, id: int):
+    print(f'Led ID for {column}, {row}: {keyboard_leds[id]}')
+
+def light_led(id: int, litColor: RGBColor):
+    print(f'Lighting led {id}...')
+    keyboard_leds[id].set_color(litColor)
+
+def douse_led(id: int, unlitColor: RGBColor):
+    print(f'Dousing led {id}...')
+    keyboard_leds[id].set_color(unlitColor)

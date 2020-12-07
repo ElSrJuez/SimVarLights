@@ -3,19 +3,15 @@
 # Press up/down/left/right to move LED cursos and take note of led 'id' number
 # Press ESC to exit.
 
-from openrgb import OpenRGBClient
-from openrgb.utils import DeviceType
 from openrgb.utils import RGBColor
 from pynput.keyboard import Key, Listener
+from RGB import *
 
 rows = 6
 cols = 22
 lit = RGBColor(0,0,255)
 unlit = RGBColor(0,0,20)
-int = None
-led_count = None
 keyb = None
-keyboard_leds = []
 
 def on_press(key):
     #print('{0} pressed'.format(
@@ -32,7 +28,7 @@ def on_release(key):
 def check_key(key):
     global i,row,col,rows,cols,led_count
     if key in [Key.up, Key.down, Key.left, Key.right]:
-        douse_led(id = i) 
+        douse_led(id = i, unlitColor = unlit) 
         if key is Key.up and row > 0:
             row = row - 1
             i = i - cols
@@ -45,32 +41,18 @@ def check_key(key):
         if key is Key.right and col < cols and (i + 1)< led_count:
             col = col + 1
             i = i + 1
-        write_led_id()
-        light_led(id = i)
+        write_led_id(column = col, row= row, id = i)
+        light_led(id = i, litColor = lit)
         
-def write_led_id():
-    print(f'Led ID for {col}, {row}: {keyboard_leds[i]}')
-
-def light_led(id: int):
-    print(f'Lighting led {id}...')
-    keyboard_leds[id].set_color(lit)
-
-def douse_led(id: int):
-    print(f'Dousing led {id}...')
-    keyboard_leds[id].set_color(unlit)
-
-cli = OpenRGBClient()
-print(cli)
-keyb = cli.get_devices_by_type(DeviceType.KEYBOARD)[0]
-print(keyb)
-keyb.set_mode('direct')
-keyboard_leds = keyb.zones[0].leds
+keyboard_leds = initRGB()
 led_count=len(keyboard_leds)
-i = keyboard_leds[0].id
+light_background(backColorHEX='#000020',inopColorHEX='#800000',INOP=(1,2,3,4,5))
+
+i = 0
 row = 0
 col = 0 
-write_led_id()
-light_led(id = i)
+write_led_id(column = col, row= row, id = i)
+light_led(id = i, litColor = lit)
 
 with Listener(
         on_press=on_press,
