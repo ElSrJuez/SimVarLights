@@ -1,7 +1,7 @@
 # SimVarLights
 Have your Simulator State Machine to your Lighted Devices (a Python Project)
 
-![SimVarLights Logo](https://github.com/ElSrJuez/SimVarLights/)
+![SimVarLights Logo](/assets/SimVarLights-github-preview.png)
 
 # Description
 A script for updating Addressable RGB Lights from SimConnect Variables. 
