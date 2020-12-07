@@ -30,7 +30,7 @@ A script for updating Addressable RGB Lights from SimConnect Variables.
 * Know how to edit a CSV file
 
 # Next Steps / ToDo
-* Gauge interest and feedback
+* Gauge interest and feedback - "gauge" - get it? : D
 * Testing and Cleanup 
 * Adding more parameters to configuration file
 * Build and Release Management / Automation
