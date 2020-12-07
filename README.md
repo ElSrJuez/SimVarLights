@@ -1,5 +1,5 @@
 # SimVarLights
-Have your Simulator State Machine to your Lighted Devices (a Python Project)
+Bring your Simulation State Machine to your Lighted Devices (a Python Project)
 
 <img src="/assets/SimVarLights-github-preview.png" width="640" height="320" />
 
