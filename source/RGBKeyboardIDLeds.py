@@ -1,5 +1,9 @@
-##############################################################
-# Navigate Keyboard LED Lights for Identification
+#####################################################################
+# SimVarLights
+# Illuminated RGB Addressable Lights based on SimConnect Variables
+# by: Diego Vásquez (2020)
+# This Software is Open Source under GNU License
+# Utility for navigating Keyboard LED Lights for Identification
 # Press up/down/left/right to move LED cursos and take note of led 'id' number
 # Press ESC to exit.
 
@@ -7,12 +11,16 @@ from openrgb.utils import RGBColor
 from pynput.keyboard import Key, Listener
 from RGB import *
 
+#####################################################################
+# Pending: Read these defaults from the configuration file
 rows = 6
 cols = 22
 lit = RGBColor(0,0,255)
 unlit = RGBColor(0,0,20)
 keyb = None
 
+#####################################################################
+# Keyboard Handlers
 def on_press(key):
     #print('{0} pressed'.format(
         #key))
@@ -44,6 +52,8 @@ def check_key(key):
         write_led_id(column = col, row= row, id = i)
         light_led(id = i, litColor = lit)
         
+#####################################################################
+# Initialize Lights
 keyboard_leds = initRGB()
 led_count=len(keyboard_leds)
 light_background(backColorHEX='#000020',inopColorHEX='#800000',INOP=(1,2,3,4,5))
@@ -54,6 +64,8 @@ col = 0
 write_led_id(column = col, row= row, id = i)
 light_led(id = i, litColor = lit)
 
+#####################################################################
+# Keyboard Handler Loop
 with Listener(
         on_press=on_press,
         on_release=on_release) as listener:

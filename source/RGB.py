@@ -1,4 +1,9 @@
-#RGB Handler Internal Module
+#####################################################################
+# SimVarLights
+# Illuminated RGB Addressable Lights based on SimConnect Variables
+# by: Diego Vásquez (2020)
+# This Software is Open Source under GNU License
+# RGB Handler Internal Module
 from openrgb import OpenRGBClient
 from openrgb.utils import DeviceType
 from openrgb.utils import RGBColor
@@ -12,6 +17,9 @@ led_count = None
 backColor = None
 inopColor = None
 
+#####################################################################
+# Initialize OpenRGB Client Connection
+# uses OpenRGB-python
 def initRGB():
     global keyb
     global cli
@@ -30,6 +38,8 @@ def initRGB():
     #assert keyboard_zone.type == ZoneType.LINEAR
     return keyboard_leds
 
+#####################################################################
+# Function for lighting bacground and keys with not-found variables
 def light_background(backColorHEX: str, inopColorHEX: str, INOP: int):
     global backColor, inopColor, keyboard_zone, keyboard_leds
     #backColor = RGBColor.fromHEX(backColorHEX)
@@ -43,16 +53,24 @@ def light_background(backColorHEX: str, inopColorHEX: str, INOP: int):
     for i in INOP:
         keyboard_leds[i].set_color(inopColor)
                 
+#####################################################################
+# Init Placeholder
 def init_lights():
     pass
 
+#####################################################################
+# Output Led Info
 def write_led_id(column: int, row: int, id: int):
     print(f'Led ID for {column}, {row}: {keyboard_leds[id]}')
 
+#####################################################################
+# Light a Led
 def light_led(id: int, litColor: RGBColor):
     print(f'Lighting led {id}...')
     keyboard_leds[id].set_color(litColor)
 
+#####################################################################
+# Douse a Led
 def douse_led(id: int, unlitColor: RGBColor):
     print(f'Dousing led {id}...')
     keyboard_leds[id].set_color(unlitColor)

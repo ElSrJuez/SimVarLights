@@ -1,3 +1,9 @@
+#####################################################################
+# SimVarLights v0.1
+# Illuminated RGB Addressable Lights based on SimConnect Variables
+# by: Diego Vásquez (2020)
+# This Software is Open Source under GNU License
+# MAIN MODULE
 import sys
 import csv
 import types
@@ -14,8 +20,12 @@ ae = None
 RGBDefaultBackground = None
 RGBINOPColor = None
 
+#######################################################################
+# Data File has Config Parameters including Simulator Variable Bindings
 filename = 'data/bindings.csv'
 
+#######################################################################
+# Function for Creating SimConnect Objects and Connection
 def init_simconnect(defaultRefreshTime: int):
     global aq
     global sm 
@@ -34,6 +44,8 @@ def init_simconnect(defaultRefreshTime: int):
 
     aq = AircraftRequests(sm, _time=defaultRefreshTime)    
 
+#######################################################################
+# Function for Loading Configuration File
 def read_config(csv_filename: str):
     global RGBDefaultBackground
     csv_rows = []
@@ -46,24 +58,27 @@ def read_config(csv_filename: str):
                 print(f'Column names are {", ".join(row)}')
                 line_count += 1
 
+#######################################################################
+# Read Special Global Configuration Lines
             if row["SimVar"] == "BACKGROUND":
                 RGBDefaultBackground = row["SimVar"]
                 print("Default Key Background Color will be ",RGBDefaultBackground)
             elif row["SimVar"] == "INOP":
                 RGBINOPColor = row["SimVar"]
                 print("INOP SimVar Color will be ",RGBINOPColor)
+
+#######################################################################
+# Read Variables
             else:                
-                #print(f'\t Title: {row["Title"]} SimVar: {row["SimVar"]} SimVarValueToMatch: {row["SimVarValueToMatch"]} RGBColorIf: {row["RGBColorIf"]} RGBColorElse: {row["RGBColorElse"]}.')           
                 csv_rows.append(row)
                 print(f'Added variable from line {line_count} with name {row["SimVar"]}')
-                #for c in csvColumns:
-                #    myConcat = c+" "+row[c]
-                #    print(f' {", ".join(myConcat)}')
                 line_count += 1
             
         print(f'Processed {line_count} lines.')
         return csv_rows
 
+#######################################################################
+# Create Simulator Variable List
 def init_simvars(varList):
     myVars=[]
 
@@ -82,19 +97,24 @@ def init_simvars(varList):
     return myVars
 
 
-
-# Load Configuration File
+#######################################################################
+# Invoke Load Configuration File
 csv_data = read_config(filename)
 #print("csv file dictionary: ",csv_data.__dict__)
 
+#######################################################################
 # Initialize SimConnect
 init_simconnect(defaultRefreshTime = 2000)
 
+#######################################################################
+# Main Processing
 if sm is not None:
     print("SimConnect Object: ",sm)    
     myBindings = init_simvars(csv_data)
     print(dir(myBindings))
 
+#######################################################################
+# Set Special Colors for Variables that are not Found on the Live Sim
     inopLights = []
     for i in myBindings:
         if i["INOP"]:
@@ -104,7 +124,8 @@ if sm is not None:
     led_count=len(keyboard_leds)
     light_background(backColorHEX='#000020',inopColorHEX='#800000',INOP=inopLights)
 
-
+#######################################################################
+# Main Loop
     while True:
         system('cls')
         for i in myBindings:
