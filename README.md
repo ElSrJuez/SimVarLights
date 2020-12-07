@@ -12,6 +12,7 @@ A script for updating Addressable RGB Lights from SimConnect Variables.
 3. Run PIP to install requirements.txt
 4. Edit the bindings.csv to add/remove SimVars as needed, use Microsoft SDK as a Reference
 5. Launch your simulator and start your flight
+6. Launch OpenRGB: https://gitlab.com/CalcProgrammer1/OpenRGB
 6. Launch main.py
 
 ## The keyboard will light based on the dynamic status of variables as configured.
